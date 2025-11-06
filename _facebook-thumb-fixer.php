@@ -481,22 +481,22 @@ add_action('wp_head', 'fbfixhead');
 function fbfixhead() {
 
 	 // Required for is_plugin_active to work.
-	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	// include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-	 // If BuddyPress is active
-	if ( is_plugin_active( 'buddypress/bp-loader.php' ) ) {			
+	//  // If BuddyPress is active
+	// if ( is_plugin_active( 'buddypress/bp-loader.php' ) ) {			
 
-		// If not on a BuddyPress members page
-		if (!bp_current_component('members')) {
-			require('output-logic.php');
-		}
+	// 	// If not on a BuddyPress members page
+	// 	if (!bp_current_component('members')) {
+	// 		require('output-logic.php');
+	// 	}
 		
-  	} 
+  	// } 
 	
 	// Otherwie, if BuddyPress is NOT active...
-	else if ( !is_plugin_active( 'buddypress/bp-loader.php' ) ) {
-		require('output-logic.php');
-	}
+	//else if ( !is_plugin_active( 'buddypress/bp-loader.php' ) ) {
+		require_once('output-logic.php');
+	//}
 		
 	echo $ftf_head ?? '';
 	print "\n";

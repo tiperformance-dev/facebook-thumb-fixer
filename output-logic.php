@@ -12,7 +12,7 @@ $blog_name 				= get_bloginfo('name');
 $post_page_description 	= wp_kses($ftf_description, array ());
 $home_description 		= get_bloginfo('description');
 $homepage_object_type	= get_option( 'homepage_object_type');
-$post_page_object_type  = get_post_meta($post->ID, 'ftf_open_type', true);
+$post_page_object_type  = $ot;
 $dog                    = get_post_meta($post->ID, "disable_open_graph", TRUE);
 // source: https://isabelcastillo.com/get-permalink-on-custom-post-type-archive-or-taxonomy-pages
 // instead of permalink:
@@ -33,9 +33,12 @@ else {
 
 
 if($post_page_description) {
+//if(1==1) {
     $post_page_description = $post_page_description;
 } else {
-    $post = get_post($post->ID);
+    // 2025-11-06
+    // don't we already have a $post global?
+    // $post = get_post($post->ID);
     $content = apply_filters('get_the_content', $post->post_content);
     $content_chars = substr($content, 0, 300);
     $page_description = strip_tags($content_chars);
@@ -43,20 +46,20 @@ if($post_page_description) {
 }
 
 if($homepage_object_type) { 
-    $homepage_object_type = get_option( 'homepage_object_type');
+    //$homepage_object_type = get_option( 'homepage_object_type');
 } else {
     $homepage_object_type = "website";
 }
 
 if($post_page_object_type) { 
-    $post_page_object_type = get_post_meta($post->ID, 'ftf_open_type', true);
+    // $post_page_object_type = $ot;
 } elseif (is_product_category() ) { //JB 2017-08-23 - wooCommerce product archive 2021-10-28 ammended as this was picking up brand archives which do not have an image set and therefore returning no image. 
 	
     //reset things for product archive
     $post_page_object_type = "article";
     $title = single_cat_title('',false);  //the_archive_title contains Category: prefix
-    $post_page_description = substr(rtrim(strip_tags(term_description())),0,300);
-    if (strlen(strip_tags(term_description())) > 300) { 
+    $post_page_description = strip_tags(term_description());
+    if (strlen($post_page_description) > 300) { 
     	$post_page_description = substr($post_page_description,0,297)."...";
     }
     //get category thumb (source: https://docs.woocommerce.com/document/woocommerce-display-category-image-on-category-archive/ )
@@ -90,7 +93,7 @@ if ( !is_home() ) {
             
             if (!is_archive() && $post->post_type == 'product') { //JB 2017-08-23 - wooCommerce product
             	$ftf_head .= '';
-                $product = new WC_Product( get_the_ID() );
+                $product = wc_get_product( get_the_ID() );
                 //2017-08-23 - commented out due to some issue with price mismatch in merchant?
                 //$ftf_head .= '<meta property="product:price:amount" content="' . $product->price . '" />';
                 //$ftf_head .= '<meta property="product:price:currency" content="' . get_option('woocommerce_currency') . '" />';
