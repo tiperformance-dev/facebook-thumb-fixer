@@ -362,11 +362,11 @@ class ftf_otmeta {
 		}
 		
         $ftf_open_type_field_data = $_POST['ftf_open_type_field'];
-        update_post_meta($post_id, 'ftf_open_type', $ftf_open_type_field_data, $ot);
+        update_post_meta($post_id, 'ftf_open_type', $ftf_open_type_field_data);
         //return $ftf_open_type_field_data;
 
-		$disable_open_graph_data = $_POST['disable_open_graph'];
-		update_post_meta($post_id, 'disable_open_graph', $disable_open_graph_data, $dog);
+		$disable_open_graph_data = $_POST['disable_open_graph'] ?? null;
+		update_post_meta($post_id, 'disable_open_graph', $disable_open_graph_data);
 		//return $disable_open_graph_data;
     }
 

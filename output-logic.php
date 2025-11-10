@@ -80,15 +80,15 @@ if ( !is_home() ) {
     if($dog !== "1") {
 
         // If there is a post image...
-        if (has_post_thumbnail() || isset($featuredimg[0])) {
-            
+        if ((has_post_thumbnail() || isset($featuredimg[0]))
+                 && !is_bool($featuredimg)) {
             $ftf_head = '<!--/ Facebook Thumb Fixer Open Graph -- has thumbnail/-->
 <meta property="og:type" content="'. $post_page_object_type . '" />
 <meta property="og:url" content="' . $permalink . '" />
 <meta property="og:title" content="' . str_replace('"', '', $title) . '" />
 <meta property="og:description" content="' . strip_shortcodes(str_replace('"', '', $post_page_description)) . '" />
 <meta property="og:site_name" content="' . str_replace('"', '', $blog_name) . '" />
-<meta property="og:image" content="' . $featuredimg[0] . '" />
+<meta property="og:image" content="' . $featuredimg[0] .'" />
 ';
             
             if (!is_archive() && $post->post_type == 'product') { //JB 2017-08-23 - wooCommerce product
