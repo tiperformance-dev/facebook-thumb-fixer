@@ -12,16 +12,22 @@ if(has_excerpt($post)) {
     $post_page_description = get_the_excerpt($post);;
     #print("FOOB1");
 } else {
-    $content = preg_replace('/\s+/', ' ', trim(str_replace(array("\n", "\t", "\r"), ' ',strip_tags(preg_replace("~(?:\[/?)[^/\]]+/?\]~s", '', get_the_content() )))));
-    #print("FOOB3".$content);
+
+    $content = strip_tags(get_the_content());
+    #print("<!-- FOOB2".$content." -->");
+
+    $content = preg_replace('/\s+/', ' ', trim(str_replace(array("\n", "\t", "\r"), ' ', preg_replace("~\[[^\]]+\]~s", '', $content ))));
+    $content = preg_replace("~(?:\[/?)[^/\]]+/?\]~s", '', $content);
+    #print("<!-- FOOB3".$content." -->");
+
     $content_chars = substr($content, 0, 300);
-    print(strlen($content_chars));
+    #print("<!-- ".strlen($content_chars)." -->");
 
     $post_page_description = $content_chars;
     if (strlen($post_page_description) >= 300) { 
     	$post_page_description = substr($post_page_description,0,297)."...";
     }
-    print("FOOB2".$post_page_description);
+    #print("<!-- FOOB4".$post_page_description." -->");
 }
 
 $ot 					= get_post_meta($post->ID, 'ftf_open_type', true);
