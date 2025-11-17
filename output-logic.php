@@ -5,11 +5,28 @@ $featuredimg 			= wp_get_attachment_image_src( get_post_thumbnail_id($post->ID),
 //print_r(wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), "Full"));
 //print_r($featuredimg);
 
-$ftf_description		= get_the_excerpt($post);
+
+// 2025-11-17 do this first and handle pages with no excerpt set
+if(has_excerpt($post)) {
+//if(1==1) {
+    $post_page_description = get_the_excerpt($post);;
+    #print("FOOB1");
+} else {
+    $content = preg_replace('/\s+/', ' ', trim(str_replace(array("\n", "\t", "\r"), ' ',strip_tags(preg_replace("~(?:\[/?)[^/\]]+/?\]~s", '', get_the_content() )))));
+    #print("FOOB3".$content);
+    $content_chars = substr($content, 0, 300);
+    print(strlen($content_chars));
+
+    $post_page_description = $content_chars;
+    if (strlen($post_page_description) >= 300) { 
+    	$post_page_description = substr($post_page_description,0,297)."...";
+    }
+    print("FOOB2".$post_page_description);
+}
+
 $ot 					= get_post_meta($post->ID, 'ftf_open_type', true);
 $title 					= get_the_title($post->ID);
 $blog_name 				= get_bloginfo('name');
-$post_page_description 	= wp_kses($ftf_description, array ());
 $home_description 		= get_bloginfo('description');
 $homepage_object_type	= get_option( 'homepage_object_type');
 $post_page_object_type  = $ot;
@@ -31,20 +48,6 @@ else {
     $permalink = get_permalink();
 }
 
-
-if($post_page_description) {
-//if(1==1) {
-    $post_page_description = $post_page_description;
-} else {
-    // 2025-11-06
-    // don't we already have a $post global?
-    // $post = get_post($post->ID);
-    $content = apply_filters('get_the_content', $post->post_content);
-    $content_chars = substr($content, 0, 300);
-    $page_description = strip_tags($content_chars);
-    $post_page_description = str_replace(array("\n", "\t", "\r"), '', $page_description);
-}
-
 if($homepage_object_type) { 
     //$homepage_object_type = get_option( 'homepage_object_type');
 } else {
@@ -59,7 +62,7 @@ if($post_page_object_type) {
     $post_page_object_type = "article";
     $title = single_cat_title('',false);  //the_archive_title contains Category: prefix
     $post_page_description = strip_tags(term_description());
-    if (strlen($post_page_description) > 300) { 
+    if (strlen($post_page_description) >= 300) { 
     	$post_page_description = substr($post_page_description,0,297)."...";
     }
     //get category thumb (source: https://docs.woocommerce.com/document/woocommerce-display-category-image-on-category-archive/ )
