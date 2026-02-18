@@ -62,7 +62,7 @@ if($homepage_object_type) {
 
 if($post_page_object_type) { 
     // $post_page_object_type = $ot;
-} elseif (is_product_category() ) { //JB 2017-08-23 - wooCommerce product archive 2021-10-28 ammended as this was picking up brand archives which do not have an image set and therefore returning no image. 
+} elseif (is_archive() ) { //JB 2026-02 using is_archive to pick up archive (brand, category, engine) thumbnails rather than first product
 	
     //reset things for product archive
     $post_page_object_type = "article";
