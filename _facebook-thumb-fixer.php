@@ -502,7 +502,7 @@ function fbfixhead() {
 	print "\n";
 	$fbaid_value = get_option('fb_app_ID');
 	if (!empty($fbaid_value)) { ?>
-	<meta property="fb:app_id" content="<?php echo get_option('fb_app_ID'); ?>" />
+	<meta property="fb:app_id" content="<?php echo $fbaid_value; ?>" />
 	<?php }
 	print "\n";
 }
