@@ -75,7 +75,9 @@ if($post_page_object_type) {
 	//2024-04-10 fixed get_woocommerce_term_meta deprecated
     global $wp_query;
     $cat = $wp_query->get_queried_object();
-    $featuredimg = wp_get_attachment_image_src( get_term_meta( $cat->term_id, 'thumbnail_id', true ), "Full");
+    if($cat) {
+        $featuredimg = wp_get_attachment_image_src( get_term_meta( $cat->term_id, 'thumbnail_id', true ), "Full");
+    }
 } elseif ($post->post_type == 'product') { //JB 2017-08-23 - wooCommerce product
     $post_page_object_type = "product";
 } else {
