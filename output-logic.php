@@ -50,7 +50,7 @@ if (!$post_page_object_type) {
     if (is_archive()) { //JB 2026-02 using is_archive to pick up archive (brand, category, engine) thumbnails rather than first product
         //reset things for product archive
         $post_page_object_type = "article";
-        $title = single_cat_title('', false);  //the_archive_title contains Category: prefix
+        $title = (string) single_cat_title('', false);  //the_archive_title contains Category: prefix
         $post_page_description = strip_tags(term_description());
         if (strlen($post_page_description) >= 300) {
             $post_page_description = substr($post_page_description, 0, 297) . "...";
@@ -59,7 +59,7 @@ if (!$post_page_object_type) {
         //2024-04-10 fixed get_woocommerce_term_meta deprecated
         global $wp_query;
         $cat = $wp_query->get_queried_object();
-        $featuredimg = $cat ? wp_get_attachment_image_src( get_term_meta( $cat->term_id, 'thumbnail_id', true ), "Full") : false;
+        $featuredimg = ($cat instanceof WP_Term) ? wp_get_attachment_image_src( get_term_meta( $cat->term_id, 'thumbnail_id', true ), "Full") : false;
     } elseif ($post->post_type == 'product') { //JB 2017-08-23 - wooCommerce product
         $post_page_object_type = "product";
     } else {
